@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: twoge-config
+  namespace: twoge-app
+data:
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_DATABASE: "twoge"

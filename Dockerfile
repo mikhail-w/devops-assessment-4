@@ -14,6 +14,13 @@ ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000
 
+# Database environment variables
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+ENV DB_HOST=db
+ENV DB_PORT=5432
+ENV DB_DATABASE=twoge
+
 # Expose port 5000
 EXPOSE 5000
 
