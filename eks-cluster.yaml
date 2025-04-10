@@ -3,8 +3,8 @@ kind: ClusterConfig
 
 metadata:
   name: twoge-cluster
-  region: us-east-1
-  version: "1.27"
+  region: us-west-2
+  version: '1.27'
 
 nodeGroups:
   - name: ng-1
@@ -13,6 +13,3 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     volumeSize: 20
-    ssh:
-      allow: true
-      publicKeyName: twoge-key 
