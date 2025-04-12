@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: twoge-cluster
+  name: twoge-cluster-mw2
   region: us-west-2
   version: '1.27'
 
