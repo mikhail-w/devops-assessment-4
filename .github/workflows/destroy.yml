@@ -1,0 +1,32 @@
+name: Destroy EKS Resources
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name twoge-mikhail-cluster2 --region us-east-1
+    
+    - name: Delete Kubernetes Resources
+      run: |
+        kubectl delete service twoge-service -n twoge-app
+        kubectl delete deployment twoge-deployment -n twoge-app
+        kubectl delete service postgres-service -n twoge-app
+        kubectl delete deployment postgres-deployment -n twoge-app
+        kubectl delete pvc postgres-pvc -n twoge-app
+        kubectl delete secret twoge-secrets -n twoge-app
+        kubectl delete configmap twoge-config -n twoge-app
+        kubectl delete namespace twoge-app

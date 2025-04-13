@@ -2,9 +2,9 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: twoge-cluster-mw2
-  region: us-west-2
-  version: '1.27'
+  name: twoge-mikhail-cluster2
+  region: us-east-1
+  version: '1.32'
 
 nodeGroups:
   - name: ng-1
@@ -13,3 +13,8 @@ nodeGroups:
     minSize: 1
     maxSize: 3
     volumeSize: 20
+    ssh:
+      allow: false
+    privateNetworking: false
+    tags:
+      k8s.io/cluster-autoscaler/enabled: "true"
