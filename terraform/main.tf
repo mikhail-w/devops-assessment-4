@@ -1,11 +1,14 @@
+# Configure AWS provider
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
+# Reference existing EKS cluster
 data "aws_eks_cluster" "cluster" {
-  name = "twoge-mikhail-cluster2"
+  name = var.cluster_name
 }
 
+# Configure Kubernetes provider to communicate with the EKS cluster
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
@@ -17,25 +20,17 @@ provider "kubernetes" {
   }
 }
 
-variable "image_tag" {
-  description = "The tag of the Docker image to deploy"
-  type        = string
-}
-
-variable "docker_username" {
-  description = "Docker Hub username"
-  type        = string
-}
-
+# Create namespace for application resources
 resource "kubernetes_namespace" "twoge_app" {
   metadata {
-    name = "twoge-app"
+    name = var.namespace_name
     labels = {
-      name = "twoge-app"
+      name = var.namespace_name
     }
   }
 }
 
+# Create ConfigMap for non-sensitive configuration
 resource "kubernetes_config_map" "twoge_config" {
   metadata {
     name      = "twoge-config"
@@ -44,11 +39,12 @@ resource "kubernetes_config_map" "twoge_config" {
 
   data = {
     DB_HOST     = "postgres-service"
-    DB_PORT     = "5432"
-    DB_DATABASE = "twoge"
+    DB_PORT     = var.db_port
+    DB_DATABASE = var.db_name
   }
 }
 
+# Create Secret for sensitive configuration
 resource "kubernetes_secret" "twoge_secrets" {
   metadata {
     name      = "twoge-secrets"
@@ -56,13 +52,14 @@ resource "kubernetes_secret" "twoge_secrets" {
   }
 
   data = {
-    DB_USER     = "cG9zdGdyZXM="  # "postgres" in base64
-    DB_PASSWORD = "cG9zdGdyZXM="  # "postgres" in base64
+    DB_USER     = var.db_user_base64
+    DB_PASSWORD = var.db_password_base64
   }
 
   type = "Opaque"
 }
 
+# Create Storage Class for persistent volume
 resource "kubernetes_storage_class" "gp3" {
   metadata {
     name = "gp3"
@@ -77,6 +74,24 @@ resource "kubernetes_storage_class" "gp3" {
   allow_volume_expansion = true
 }
 
+# Create Resource Quota for the namespace
+resource "kubernetes_resource_quota" "twoge_quota" {
+  metadata {
+    name      = "twoge-quota"
+    namespace = kubernetes_namespace.twoge_app.metadata[0].name
+  }
+  spec {
+    hard = {
+      "requests.cpu"    = "1"
+      "requests.memory" = "1Gi"
+      "limits.cpu"      = "2"
+      "limits.memory"   = "2Gi"
+      "pods"            = "10"
+    }
+  }
+}
+
+# Create Persistent Volume Claim for PostgreSQL
 resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
   metadata {
     name      = "postgres-pvc"
@@ -86,13 +101,14 @@ resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
     access_modes = ["ReadWriteOnce"]
     resources {
       requests = {
-        storage = "1Gi"
+        storage = var.postgres_storage
       }
     }
     storage_class_name = kubernetes_storage_class.gp3.metadata[0].name
   }
 }
 
+# Create PostgreSQL Deployment
 resource "kubernetes_deployment" "postgres" {
   metadata {
     name      = "postgres-deployment"
@@ -103,7 +119,7 @@ resource "kubernetes_deployment" "postgres" {
   }
 
   spec {
-    replicas = 1
+    replicas = var.postgres_replicas
     selector {
       match_labels = {
         app = "postgres"
@@ -118,7 +134,7 @@ resource "kubernetes_deployment" "postgres" {
       spec {
         container {
           name  = "postgres"
-          image = "postgres:13"
+          image = "postgres:${var.postgres_version}"
           port {
             container_port = 5432
           }
@@ -184,6 +200,7 @@ resource "kubernetes_deployment" "postgres" {
   }
 }
 
+# Create PostgreSQL Service
 resource "kubernetes_service" "postgres" {
   metadata {
     name      = "postgres-service"
@@ -201,6 +218,7 @@ resource "kubernetes_service" "postgres" {
   }
 }
 
+# Create Twoge Application Deployment
 resource "kubernetes_deployment" "twoge" {
   metadata {
     name      = "twoge-deployment"
@@ -211,7 +229,7 @@ resource "kubernetes_deployment" "twoge" {
   }
 
   spec {
-    replicas = 2
+    replicas = var.twoge_replicas
     selector {
       match_labels = {
         app = "twoge"
@@ -226,6 +244,7 @@ resource "kubernetes_deployment" "twoge" {
       spec {
         container {
           name  = "twoge"
+          # Use the dynamic image tag from CI/CD
           image = "${var.docker_username}/twoge:${var.image_tag}"
           port {
             container_port = 8080
@@ -321,6 +340,7 @@ resource "kubernetes_deployment" "twoge" {
   }
 }
 
+# Create Twoge Service with LoadBalancer
 resource "kubernetes_service" "twoge" {
   metadata {
     name      = "twoge-service"

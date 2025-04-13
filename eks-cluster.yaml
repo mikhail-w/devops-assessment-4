@@ -2,8 +2,8 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: twoge-mikhail-cluster2
-  region: us-east-1
+  name: twoge-cluster-mw
+  region: us-east-2
   version: '1.32'
 
 nodeGroups:
