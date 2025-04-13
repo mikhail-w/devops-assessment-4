@@ -1,0 +1,63 @@
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{},\"labels\":{\"name\":\"twoge-app\"},\"name\":\"twoge-app\"}}\n"
+        },
+        "creationTimestamp": "2025-04-12T15:24:50Z",
+        "deletionTimestamp": "2025-04-12T17:45:42Z",
+        "labels": {
+            "kubernetes.io/metadata.name": "twoge-app",
+            "name": "twoge-app"
+        },
+        "name": "twoge-app",
+        "resourceVersion": "34186",
+        "uid": "a4b3aaa3-9e45-4489-be08-358503765c3a"
+    },
+    "spec": {
+        "finalizers": [
+            "kubernetes"
+        ]
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastTransitionTime": "2025-04-12T17:45:47Z",
+                "message": "Discovery failed for some groups, 1 failing: unable to retrieve the complete list of server APIs: metrics.k8s.io/v1beta1: stale GroupVersion discovery: metrics.k8s.io/v1beta1",
+                "reason": "DiscoveryFailed",
+                "status": "True",
+                "type": "NamespaceDeletionDiscoveryFailure"
+            },
+            {
+                "lastTransitionTime": "2025-04-12T17:45:48Z",
+                "message": "All legacy kube types successfully parsed",
+                "reason": "ParsedGroupVersions",
+                "status": "False",
+                "type": "NamespaceDeletionGroupVersionParsingFailure"
+            },
+            {
+                "lastTransitionTime": "2025-04-12T17:46:14Z",
+                "message": "Failed to delete all resource types, 1 remaining: unexpected items still remain in namespace: twoge-app for gvr: /v1, Resource=pods",
+                "reason": "ContentDeletionFailed",
+                "status": "True",
+                "type": "NamespaceDeletionContentFailure"
+            },
+            {
+                "lastTransitionTime": "2025-04-12T17:45:48Z",
+                "message": "Some resources are remaining: pods. has 2 resource instances",
+                "reason": "SomeResourcesRemain",
+                "status": "True",
+                "type": "NamespaceContentRemaining"
+            },
+            {
+                "lastTransitionTime": "2025-04-12T17:46:14Z",
+                "message": "All content-preserving finalizers finished",
+                "reason": "ContentHasNoFinalizers",
+                "status": "False",
+                "type": "NamespaceFinalizersRemaining"
+            }
+        ],
+        "phase": "Terminating"
+    }
+}
