@@ -149,6 +149,10 @@ Both deployments include resource requests and limits:
 
 ![Docker Image](./images/docker-image.png)
 
+### YAML configuration files
+
+![Minikube Pods and Services](./images/minikube-yaml-files.png)
+
 ### Minikube Deployment
 
 ![Minikube Pods and Services](./images/minikube-deployment-01.png)
