@@ -5,7 +5,3 @@ metadata:
   name: twoge-cluster-mw
   region: us-east-1
   version: '1.32'
-
-# Important: Enable OIDC provider
-iam:
-  withOIDC: true

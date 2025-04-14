@@ -18,7 +18,7 @@ jobs:
         aws-region: us-east-1
     
     - name: Update kube config
-      run: aws eks update-kubeconfig --name twoge-cluster-mw --region us-east-2
+      run: aws eks update-kubeconfig --name twoge-cluster-mw --region us-east-1
     
     - name: Delete Kubernetes Resources
       run: |

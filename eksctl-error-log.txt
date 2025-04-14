@@ -1,0 +1,244 @@
+2025-04-14 12:07:34 [▶]  Setting credentials expiry window to 30 minutes
+2025-04-14 12:07:34 [▶]  role ARN for the current session is "arn:aws:iam::536697237321:user/mikhail"
+2025-04-14 12:07:35 [ℹ]  eksctl version 0.207.0
+2025-04-14 12:07:35 [ℹ]  using region us-east-1
+2025-04-14 12:07:35 [▶]  determining availability zones
+2025-04-14 12:07:35 [ℹ]  setting availability zones to [us-east-1a us-east-1b us-east-1c]
+2025-04-14 12:07:35 [▶]  VPC CIDR (192.168.0.0/16) was divided into 8 subnets [192.168.0.0/19 192.168.32.0/19 192.168.64.0/19 192.168.96.0/19 192.168.128.0/19 192.168.160.0/19 192.168.192.0/19 192.168.224.0/19]
+2025-04-14 12:07:35 [ℹ]  subnets for us-east-1a - public:192.168.0.0/19 private:192.168.96.0/19
+2025-04-14 12:07:35 [ℹ]  subnets for us-east-1b - public:192.168.32.0/19 private:192.168.128.0/19
+2025-04-14 12:07:35 [ℹ]  subnets for us-east-1c - public:192.168.64.0/19 private:192.168.160.0/19
+2025-04-14 12:07:35 [▶]  resolving AMI using SSM Parameter resolver for region us-east-1, instanceType t3.medium and imageFamily AmazonLinux2
+2025-04-14 12:07:35 [ℹ]  nodegroup "ng-1" will use "ami-02c840917dc84fa8a" [AmazonLinux2/1.32]
+2025-04-14 12:07:36 [ℹ]  using Kubernetes version 1.32
+2025-04-14 12:07:36 [ℹ]  creating EKS cluster "twoge-cluster-mw" in "us-east-1" region with un-managed nodes
+2025-04-14 12:07:36 [▶]  cfg.json = \
+{
+    "kind": "ClusterConfig",
+    "apiVersion": "eksctl.io/v1alpha5",
+    "metadata": {
+        "name": "twoge-cluster-mw",
+        "region": "us-east-1",
+        "version": "1.32"
+    },
+    "iam": {
+        "withOIDC": false,
+        "vpcResourceControllerPolicy": true
+    },
+    "accessConfig": {
+        "authenticationMode": "API_AND_CONFIG_MAP"
+    },
+    "vpc": {
+        "cidr": "192.168.0.0/16",
+        "subnets": {
+            "private": {
+                "us-east-1a": {
+                    "az": "us-east-1a",
+                    "cidr": "192.168.96.0/19"
+                },
+                "us-east-1b": {
+                    "az": "us-east-1b",
+                    "cidr": "192.168.128.0/19"
+                },
+                "us-east-1c": {
+                    "az": "us-east-1c",
+                    "cidr": "192.168.160.0/19"
+                }
+            },
+            "public": {
+                "us-east-1a": {
+                    "az": "us-east-1a",
+                    "cidr": "192.168.0.0/19"
+                },
+                "us-east-1b": {
+                    "az": "us-east-1b",
+                    "cidr": "192.168.32.0/19"
+                },
+                "us-east-1c": {
+                    "az": "us-east-1c",
+                    "cidr": "192.168.64.0/19"
+                }
+            }
+        },
+        "manageSharedNodeSecurityGroupRules": true,
+        "autoAllocateIPv6": false,
+        "nat": {
+            "gateway": "Single"
+        },
+        "clusterEndpoints": {
+            "privateAccess": false,
+            "publicAccess": true
+        }
+    },
+    "addonsConfig": {},
+    "privateCluster": {
+        "enabled": false,
+        "skipEndpointCreation": false
+    },
+    "nodeGroups": [
+        {
+            "name": "ng-1",
+            "amiFamily": "AmazonLinux2",
+            "instanceType": "t3.medium",
+            "desiredCapacity": 2,
+            "minSize": 1,
+            "maxSize": 3,
+            "volumeSize": 20,
+            "ssh": {
+                "allow": false
+            },
+            "labels": {
+                "alpha.eksctl.io/cluster-name": "twoge-cluster-mw",
+                "alpha.eksctl.io/nodegroup-name": "ng-1"
+            },
+            "privateNetworking": false,
+            "tags": {
+                "k8s.io/cluster-autoscaler/enabled": "true"
+            },
+            "iam": {
+                "withAddonPolicies": {
+                    "imageBuilder": false,
+                    "autoScaler": false,
+                    "externalDNS": false,
+                    "certManager": false,
+                    "appMesh": null,
+                    "appMeshPreview": null,
+                    "ebs": false,
+                    "fsx": false,
+                    "efs": false,
+                    "awsLoadBalancerController": false,
+                    "albIngress": false,
+                    "xRay": false,
+                    "cloudWatch": false
+                }
+            },
+            "ami": "ami-02c840917dc84fa8a",
+            "securityGroups": {
+                "withShared": true,
+                "withLocal": true
+            },
+            "volumeType": "gp3",
+            "volumeName": "/dev/xvda",
+            "volumeEncrypted": false,
+            "volumeIOPS": 3000,
+            "volumeThroughput": 125,
+            "disableIMDSv1": true,
+            "disablePodIMDS": false,
+            "instanceSelector": {},
+            "containerRuntime": "containerd"
+        }
+    ],
+    "availabilityZones": [
+        "us-east-1a",
+        "us-east-1b",
+        "us-east-1c"
+    ]
+}
+
+2025-04-14 12:07:36 [ℹ]  1 nodegroup (ng-1) was included (based on the include/exclude rules)
+2025-04-14 12:07:36 [ℹ]  will create a CloudFormation stack for cluster itself and 1 nodegroup stack(s)
+2025-04-14 12:07:36 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --cluster=twoge-cluster-mw'
+2025-04-14 12:07:36 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "twoge-cluster-mw" in "us-east-1"
+2025-04-14 12:07:36 [ℹ]  CloudWatch logging will not be enabled for cluster "twoge-cluster-mw" in "us-east-1"
+2025-04-14 12:07:36 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=us-east-1 --cluster=twoge-cluster-mw'
+2025-04-14 12:07:36 [ℹ]  default addons coredns, metrics-server, vpc-cni, kube-proxy were not specified, will install them as EKS addons
+2025-04-14 12:07:36 [ℹ]  
+2 sequential tasks: { create cluster control plane "twoge-cluster-mw", 
+    2 sequential sub-tasks: { 
+        2 sequential sub-tasks: { 
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create nodegroup "ng-1",
+    } 
+}
+2025-04-14 12:07:36 [▶]  started task: create cluster control plane "twoge-cluster-mw"
+2025-04-14 12:07:36 [ℹ]  building cluster stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:07:36 [▶]  CreateStackInput = &cloudformation.CreateStackInput{StackName:(*string)(0xc000cea090), Capabilities:[]types.Capability{"CAPABILITY_IAM"}, ClientRequestToken:(*string)(nil), DisableRollback:(*bool)(0xc0006f1d18), EnableTerminationProtection:(*bool)(nil), NotificationARNs:[]string(nil), OnFailure:"", Parameters:[]types.Parameter(nil), ResourceTypes:[]string(nil), RetainExceptOnCreate:(*bool)(nil), RoleARN:(*string)(nil), RollbackConfiguration:(*types.RollbackConfiguration)(nil), StackPolicyBody:(*string)(nil), StackPolicyURL:(*string)(nil), Tags:[]types.Tag{types.Tag{Key:(*string)(0xc000cc8010), Value:(*string)(0xc000cc8020), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc8030), Value:(*string)(0xc000cc8040), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc8050), Value:(*string)(0xc000cc8060), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cebdd0), Value:(*string)(0xc000cebde0), noSmithyDocumentSerde:document.NoSerde{}}}, TemplateBody:(*string)(0xc000cebdf0), TemplateURL:(*string)(nil), TimeoutInMinutes:(*int32)(nil), noSmithyDocumentSerde:document.NoSerde{}}
+2025-04-14 12:07:37 [ℹ]  deploying stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:08:07 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:08:39 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:09:41 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:10:44 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:11:45 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:12:47 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:13:49 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:14:52 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-cluster"
+2025-04-14 12:14:52 [▶]  processing stack outputs
+2025-04-14 12:14:53 [▶]  completed task: create cluster control plane "twoge-cluster-mw"
+2025-04-14 12:14:53 [▶]  started task: 
+    2 sequential sub-tasks: { 
+        2 sequential sub-tasks: { 
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create nodegroup "ng-1",
+    }
+
+2025-04-14 12:14:53 [▶]  started task: 
+    2 sequential sub-tasks: { 
+        1 task: { create addons },
+        wait for control plane to become ready,
+    }
+
+2025-04-14 12:14:53 [▶]  started task: 1 task: { create addons }
+2025-04-14 12:14:53 [▶]  started task: create addons
+2025-04-14 12:14:54 [▶]  resolve conflicts set to OVERWRITE
+2025-04-14 12:14:54 [▶]  addon: &{coredns v1.11.4-eksbuild.2  [] map[]  {false false false false false false false} map[]  <nil> false  true [] [] []}
+2025-04-14 12:14:54 [ℹ]  creating addon: coredns
+2025-04-14 12:14:54 [▶]  EKS Create Addon output: {%!s(*string=0xc000bc7f40) %!s(*string=0xc000bc7f10) %!s(*string=0xc000bc7f30) %!s(*string=0xc000bc7f20) %!s(*string=<nil>) 2025-04-14 16:14:54.889 +0000 UTC %!s(*types.AddonHealth=&{[] {}}) %!s(*types.MarketplaceInformation=<nil>) 2025-04-14 16:14:54.902 +0000 UTC %!s(*string=<nil>) [] %!s(*string=<nil>) %!s(*string=<nil>) CREATING map[] {}}
+2025-04-14 12:14:54 [ℹ]  successfully created addon: coredns
+2025-04-14 12:14:54 [▶]  resolve conflicts set to OVERWRITE
+2025-04-14 12:14:54 [▶]  addon: &{metrics-server v0.7.2-eksbuild.2  [] map[]  {false false false false false false false} map[]  <nil> false  true [] [] []}
+2025-04-14 12:14:54 [ℹ]  creating addon: metrics-server
+2025-04-14 12:14:55 [▶]  EKS Create Addon output: {%!s(*string=0xc000d7dc10) %!s(*string=0xc000d7dbe0) %!s(*string=0xc000d7dc00) %!s(*string=0xc000d7dbf0) %!s(*string=<nil>) 2025-04-14 16:14:55.61 +0000 UTC %!s(*types.AddonHealth=&{[] {}}) %!s(*types.MarketplaceInformation=<nil>) 2025-04-14 16:14:55.622 +0000 UTC %!s(*string=<nil>) [] %!s(*string=<nil>) %!s(*string=<nil>) CREATING map[] {}}
+2025-04-14 12:14:55 [ℹ]  successfully created addon: metrics-server
+2025-04-14 12:14:55 [▶]  resolve conflicts set to OVERWRITE
+2025-04-14 12:14:55 [▶]  addon: &{vpc-cni v1.19.2-eksbuild.1  [] map[]  {false false false false false false false} map[]  <nil> false  true [] [] []}
+2025-04-14 12:14:55 [!]  recommended policies were found for "vpc-cni" addon, but since OIDC is disabled on the cluster, eksctl cannot configure the requested permissions; the recommended way to provide IAM permissions for "vpc-cni" addon is via pod identity associations; after addon creation is completed, add all recommended policies to the config file, under `addon.PodIdentityAssociations`, and run `eksctl update addon`
+2025-04-14 12:14:55 [ℹ]  creating addon: vpc-cni
+2025-04-14 12:14:55 [▶]  EKS Create Addon output: {%!s(*string=0xc000c0a5a0) %!s(*string=0xc000c0a570) %!s(*string=0xc000c0a590) %!s(*string=0xc000c0a580) %!s(*string=<nil>) 2025-04-14 16:14:56.437 +0000 UTC %!s(*types.AddonHealth=&{[] {}}) %!s(*types.MarketplaceInformation=<nil>) 2025-04-14 16:14:56.451 +0000 UTC %!s(*string=<nil>) [] %!s(*string=<nil>) %!s(*string=<nil>) CREATING map[] {}}
+2025-04-14 12:14:55 [ℹ]  successfully created addon: vpc-cni
+2025-04-14 12:14:56 [▶]  resolve conflicts set to OVERWRITE
+2025-04-14 12:14:56 [▶]  addon: &{kube-proxy v1.32.0-eksbuild.2  [] map[]  {false false false false false false false} map[]  <nil> false  true [] [] []}
+2025-04-14 12:14:56 [ℹ]  creating addon: kube-proxy
+2025-04-14 12:14:56 [▶]  EKS Create Addon output: {%!s(*string=0xc000c0be00) %!s(*string=0xc000c0bde0) %!s(*string=0xc000c0bdf0) %!s(*string=0xc000c0bdd0) %!s(*string=<nil>) 2025-04-14 16:14:57.154 +0000 UTC %!s(*types.AddonHealth=&{[] {}}) %!s(*types.MarketplaceInformation=<nil>) 2025-04-14 16:14:57.169 +0000 UTC %!s(*string=<nil>) [] %!s(*string=<nil>) %!s(*string=<nil>) CREATING map[] {}}
+2025-04-14 12:14:56 [ℹ]  successfully created addon: kube-proxy
+2025-04-14 12:14:56 [▶]  completed task: create addons
+2025-04-14 12:14:56 [▶]  completed task: 1 task: { create addons }
+2025-04-14 12:14:56 [▶]  started task: wait for control plane to become ready
+2025-04-14 12:17:01 [▶]  cluster = &types.Cluster{AccessConfig:(*types.AccessConfigResponse)(0xc000d06200), Arn:(*string)(0xc00019cd40), CertificateAuthority:(*types.Certificate)(0xc00019cce0), ClientRequestToken:(*string)(nil), ComputeConfig:(*types.ComputeConfigResponse)(nil), ConnectorConfig:(*types.ConnectorConfigResponse)(nil), CreatedAt:time.Date(2025, time.April, 14, 16, 8, 1, 93000000, time.UTC), EncryptionConfig:[]types.EncryptionConfig(nil), Endpoint:(*string)(0xc00019d480), Health:(*types.ClusterHealth)(0xc000d061a0), Id:(*string)(nil), Identity:(*types.Identity)(0xc00019d3f0), KubernetesNetworkConfig:(*types.KubernetesNetworkConfigResponse)(0xc000ab6c90), Logging:(*types.Logging)(0xc000d061c0), Name:(*string)(0xc00019cd30), OutpostConfig:(*types.OutpostConfigResponse)(nil), PlatformVersion:(*string)(0xc00019d460), RemoteNetworkConfig:(*types.RemoteNetworkConfigResponse)(nil), ResourcesVpcConfig:(*types.VpcConfigResponse)(0xc000534150), RoleArn:(*string)(0xc00019d4c0), Status:"ACTIVE", StorageConfig:(*types.StorageConfigResponse)(nil), Tags:map[string]string{"Name":"eksctl-twoge-cluster-mw-cluster/ControlPlane", "alpha.eksctl.io/cluster-name":"twoge-cluster-mw", "alpha.eksctl.io/cluster-oidc-enabled":"false", "alpha.eksctl.io/eksctl-version":"0.207.0", "aws:cloudformation:logical-id":"ControlPlane", "aws:cloudformation:stack-id":"arn:aws:cloudformation:us-east-1:536697237321:stack/eksctl-twoge-cluster-mw-cluster/9563def0-194a-11f0-80d9-06914378a9cd", "aws:cloudformation:stack-name":"eksctl-twoge-cluster-mw-cluster", "eksctl.cluster.k8s.io/v1alpha1/cluster-name":"twoge-cluster-mw"}, UpgradePolicy:(*types.UpgradePolicyResponse)(0xc000df4318), Version:(*string)(0xc00019d470), ZonalShiftConfig:(*types.ZonalShiftConfigResponse)(nil), noSmithyDocumentSerde:document.NoSerde{}}
+2025-04-14 12:17:01 [▶]  completed task: wait for control plane to become ready
+2025-04-14 12:17:01 [▶]  completed task: 
+    2 sequential sub-tasks: { 
+        1 task: { create addons },
+        wait for control plane to become ready,
+    }
+
+2025-04-14 12:17:01 [▶]  started task: create nodegroup "ng-1"
+2025-04-14 12:17:01 [▶]  waiting for 1 parallel tasks to complete
+2025-04-14 12:17:01 [▶]  started task: create nodegroup "ng-1"
+2025-04-14 12:17:01 [▶]  started task: create nodegroup "ng-1"
+2025-04-14 12:17:01 [ℹ]  building nodegroup stack "eksctl-twoge-cluster-mw-nodegroup-ng-1"
+2025-04-14 12:17:01 [▶]  user-data = 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
+2025-04-14 12:17:02 [▶]  CreateStackInput = &cloudformation.CreateStackInput{StackName:(*string)(0xc000cc8450), Capabilities:[]types.Capability{"CAPABILITY_IAM"}, ClientRequestToken:(*string)(nil), DisableRollback:(*bool)(0xc0007883d8), EnableTerminationProtection:(*bool)(nil), NotificationARNs:[]string(nil), OnFailure:"", Parameters:[]types.Parameter(nil), ResourceTypes:[]string(nil), RetainExceptOnCreate:(*bool)(nil), RoleARN:(*string)(nil), RollbackConfiguration:(*types.RollbackConfiguration)(nil), StackPolicyBody:(*string)(nil), StackPolicyURL:(*string)(nil), Tags:[]types.Tag{types.Tag{Key:(*string)(0xc000cc8010), Value:(*string)(0xc000cc8020), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc8030), Value:(*string)(0xc000cc8040), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc8050), Value:(*string)(0xc000cc8060), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc97e0), Value:(*string)(0xc000cc97f0), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc9800), Value:(*string)(0xc000cc9810), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc9820), Value:(*string)(0xc000cc9830), noSmithyDocumentSerde:document.NoSerde{}}, types.Tag{Key:(*string)(0xc000cc9840), Value:(*string)(0xc000cc9850), noSmithyDocumentSerde:document.NoSerde{}}}, TemplateBody:(*string)(0xc000cc9860), TemplateURL:(*string)(nil), TimeoutInMinutes:(*int32)(nil), noSmithyDocumentSerde:document.NoSerde{}}
+2025-04-14 12:17:02 [ℹ]  deploying stack "eksctl-twoge-cluster-mw-nodegroup-ng-1"
+2025-04-14 12:17:02 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-nodegroup-ng-1"
+2025-04-14 12:17:34 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-nodegroup-ng-1"
+2025-04-14 12:18:07 [ℹ]  waiting for CloudFormation stack "eksctl-twoge-cluster-mw-nodegroup-ng-1"
+2025-04-14 12:18:07 [▶]  failed task: create nodegroup "ng-1" (will continue until other parallel tasks are completed)
+2025-04-14 12:18:07 [▶]  failed task: create nodegroup "ng-1" (will continue until other parallel tasks are completed)
+2025-04-14 12:18:07 [▶]  failed task: create nodegroup "ng-1" (will not run other sequential tasks)
+2025-04-14 12:18:07 [▶]  failed task: 
+    2 sequential sub-tasks: { 
+        2 sequential sub-tasks: { 
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create nodegroup "ng-1",
+    }
+ (will not run other sequential tasks)
+2025-04-14 12:18:07 [!]  1 error(s) occurred and cluster hasn't been created properly, you may wish to check CloudFormation console
+2025-04-14 12:18:07 [ℹ]  to cleanup resources, run 'eksctl delete cluster --region=us-east-1 --name=twoge-cluster-mw'
+2025-04-14 12:18:07 [✖]  waiter state transitioned to Failure
+Error: failed to create cluster "twoge-cluster-mw"

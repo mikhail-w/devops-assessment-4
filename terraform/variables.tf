@@ -44,7 +44,7 @@ variable "cluster_name" {
 variable "region" {
   description = "AWS region where the cluster is deployed"
   type        = string
-  default     = "us-east-2"
+  default     = "us-east-1"
 }
 
 variable "namespace_name" {
