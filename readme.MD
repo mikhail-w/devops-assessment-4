@@ -101,32 +101,6 @@ The architecture includes:
    minikube service twoge-service -n twoge-app
    ```
 
-### AWS EKS Deployment
-
-1. Create EKS cluster
-
-   ```
-   eksctl create cluster -f eks-cluster.yaml
-   ```
-
-2. Apply Kubernetes configurations
-
-   ```
-   kubectl apply -f namespace.yaml
-   kubectl apply -f configmap.yaml
-   kubectl apply -f secrets.yaml
-   kubectl apply -f postgres-pvc.yaml
-   kubectl apply -f postgres-deployment.yaml
-   kubectl apply -f postgres-service.yaml
-   kubectl apply -f twoge-deployment.yaml
-   kubectl apply -f twoge-service.yaml
-   ```
-
-3. Get the LoadBalancer URL
-   ```
-   kubectl get service twoge-service -n twoge-app
-   ```
-
 ## Implementation Details
 
 ### Namespace
